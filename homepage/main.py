@@ -50,8 +50,8 @@ class EducationHandler(BaseHandler):
 
 app = webapp2.WSGIApplication([
     webapp2.Route('/', MainHandler),
-    webapp2.Route('/blog.html', BlogHandler),
-    webapp2.Route('/projects.html', ProjectsHandler),
-    webapp2.Route('/skills.html', SkillsHandler),
-    webapp2.Route('/education.html', EducationHandler),
+    webapp2.Route('/blog', BlogHandler),
+    webapp2.Route('/projects', ProjectsHandler),
+    webapp2.Route('/skills', SkillsHandler),
+    webapp2.Route('/education', EducationHandler),
 ], debug=True)
