@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>SmartNinja basic Jinja template</title>
+
+    <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+    <h1>What's the capital of the {{ country }}?</h1>
+
+    {% if correct == False %}
+
+      <form method="post" action="/">
+          <br>
+          <input name="answer">
+          <input name="country" type="hidden" value="{{ country }}">
+          <button type="submit">Submit</button>
+      </form>
+    {% endif %}
+
+    {{ text }}
+
+    <form action="/" method="get">
+      <br>
+      <button type="submit" value=True name="change_country">Change country</button>
+    </form>
+    <p></p>
+    <img src="{{ url }}">
+
+
+</body>
+</html>
