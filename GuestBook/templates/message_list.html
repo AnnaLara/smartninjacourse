@@ -10,7 +10,7 @@
       <h1>List of all messages</h1>
 
       {% for message in messages %}
-        <p>{{ message.name }} <a href="/message/{{ message.key.id() }}">{{ message.text }}</a></p>
+        <p>Name: {{ message.name }} Text: <a href="/message/{{ message.key.id() }}">{{ message.text }}</a></p>
       {% endfor %}
 
     </body>
