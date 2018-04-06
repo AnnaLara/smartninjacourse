@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>New email</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+    <h1>Create new email</h1>
+    <a href="{{ logout_url }}">Logout</a>
+
+    <form method="post">
+        <p>
+          <lable for="recipient">To:</lable>
+          <input name="recipient" id="recipient" type="email">
+        <p/>
+        <p>
+          <lable name="subject" for="subject">Subject:</lable>
+            <input id ="subject" name="subject"></p>
+        <p>
+          <lable name="message" for="message">Your message:</lable>
+          <input id="message" name="message" type="text">
+        </p>
+        <p><button type="submit">Send</button></p>
+    </form>
+
+</body>
+</html>
