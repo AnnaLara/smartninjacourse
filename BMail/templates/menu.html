@@ -1,0 +1,11 @@
+<div id="Menu">
+  <a href="/">Home</a>
+  <a href="/new-email">Create new email</a>
+  <a href="/inbox">Inbox</a>
+  <a href="/sent-emails">Sent</a>
+  {% if logout_url %}
+    <a href={{logout_url}}>Log out</a>
+  {% elif login_url %}
+    <a href={{login_url}}>Log in</a>
+  {% endif %}
+</div>

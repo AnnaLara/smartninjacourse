@@ -1,14 +1,10 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title>Inbox</title>
+{% extends "base.html" %}
 
-    <link rel="stylesheet" href="/assets/css/style.css">
-</head>
-<body>
+{% block title %}Inbox{% endblock title %}
+
+{% block page_content %}
     <h1>Hello, {{ user.nickname() }}!</h1>
-    <a href="{{ logout_url }}">Logout</a>
+    {% include "menu.html" %}
     <h1>{{ view_name }} messages</h1>
 
     {% for e in emails %}
@@ -22,6 +18,4 @@
          <a href="/emails/{{ e.key.id() }}">{{ e.message }}</a>
       </p>
     {% endfor %}
-
-</body>
-</html>
+{% endblock page_content %}
