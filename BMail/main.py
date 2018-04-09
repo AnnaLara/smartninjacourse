@@ -3,6 +3,7 @@ import os
 import jinja2
 import webapp2
 from models import Email
+from datetime import datetime
 
 from google.appengine.api import users
 
@@ -72,7 +73,7 @@ class NewEmailHandler(BaseHandler):
         subject = self.request.get("subject")
         message = self.request.get("message")
 
-        email = Email(sender = sender, recipient = recipient, subject = subject, message = message)
+        email = Email(sender = sender, recipient = recipient, subject = subject, message = message.replace("<script>", ""))
         email.put()
 
         return self.render_template("message_sent.html")
@@ -81,17 +82,17 @@ class InboxHandler(BaseHandler):
     def get(self):
         user = users.get_current_user()
         emails = Email.query(Email.recipient == user.email()).fetch()
-
         params = {"emails": emails, "user": user, "view_name": "Inbox"}
         self.render_template("view_emails.html", params = params)
+
 
 class SentEmailsHandler(BaseHandler):
     def get(self):
         user = users.get_current_user()
         emails = Email.query(Email.sender == user.email()).fetch()
-
         params = {"emails": emails, "user": user, "view_name": "Sent"}
         self.render_template("view_emails.html", params = params)
+
 
 class MessageDetailsHandler(BaseHandler):
     def get(self, email_id):
@@ -108,6 +109,6 @@ app = webapp2.WSGIApplication([
     webapp2.Route('/', MainHandler),
     webapp2.Route('/new-email', NewEmailHandler),
     webapp2.Route('/inbox', InboxHandler, name = "Inbox"),
-    webapp2.Route('/sent-emails', SentEmailsHandler),
+    webapp2.Route('/sent', SentEmailsHandler),
     webapp2.Route('/emails/<email_id:\d+>', MessageDetailsHandler),
 ], debug=True)

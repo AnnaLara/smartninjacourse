@@ -4,13 +4,17 @@
 
 {% block page_content %}
 {% include "menu.html"%}
+<br>
+<h3>Email info</h3>
+<br>
 
-<h1>Email info</h1>
+<ul class="list-group">
+  <li class="list-group-item"><strong>From: </strong>{{ email.sender }}</li>
+  <li class="list-group-item"><strong>To: </strong>{{ email.recipient }}</li>
+  <li class="list-group-item"><strong>Subject: </strong>{{ email.subject }}</li>
+  <li class="list-group-item"><strong>Received: </strong>{{ email.created.strftime('%b %d, %Y  %H:%M') }}</li>
+  <li class="list-group-item"><p>{{ email.message.replace("\n", '</p><p>') }}</p></li>
 
-<p>Email ID: {{ email.key.id() }}</p>
-<p>Sender: {{ email.sender }}</p
-<p>Recipient: {{ email.recipient }}</p>
-<p>Message: {{ email.message }}</p>
-<p>Received: {{ email.created }}</p>
+</ul>
 
 {% endblock page_content %}

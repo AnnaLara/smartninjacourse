@@ -3,19 +3,45 @@
 {% block title %}Inbox{% endblock title %}
 
 {% block page_content %}
-    <h1>Hello, {{ user.nickname() }}!</h1>
+    <h6>Hello, {{ user.nickname() }}!</h6>
     {% include "menu.html" %}
-    <h1>{{ view_name }} messages</h1>
+    <br>
+    <h4>{{ view_name }} messages</h4>
+    <br>
+    {% if emails %}
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">
+              {% if view_name == "Inbox"%}
+                <strong>Sender</strong>
+              {% else %}
+                <strong>Recipient</strong>
+              {% endif %}
+            </th>
+            <th scope="col">Subject</th>
+            <th scope="col">Message</th>
+            <th scope="col">Date and time</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for e in emails %}
+            <tr>
+              <td>
+              {% if view_name == "Inbox"%}
+                {{ e.sender }}
+              {% else %}
+                {{ e.recipient }}
+              {% endif %}
+              </td>
+              <td>{{ e.subject[:30] }}</td>
+              <td><a href="/emails/{{ e.key.id() }}">{{ e.message[:60] }}</a></td>
+              <td><span class="badge badge-primary badge-pill">{{ e.created.strftime('%b %d, %Y  %H:%M') }}</span></td>
+            </tr>
+          {% endfor %}
+        </tbody>
 
-    {% for e in emails %}
-      <p>
-        {% if view_name == "Inbox"%}
-          {{ e.sender }}
-        {% else %}
-          {{ e.recipient }}
-        {% endif %}
-        {{ e.subject }}
-         <a href="/emails/{{ e.key.id() }}">{{ e.message }}</a>
-      </p>
-    {% endfor %}
+    {% else %}
+      <p>Sorry, no messages found...</p>
+    {% endif %}
 {% endblock page_content %}

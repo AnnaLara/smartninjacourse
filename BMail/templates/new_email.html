@@ -5,22 +5,24 @@
 {% block page_content %}
 {% include "menu.html"%}
 
-<h1>Create new email</h1>
-<a href="{{ logout_url }}">Logout</a>
+<div class="container">
+  <h3>Create new email</h3>
 
-<form method="post">
-    <p>
-      <lable for="recipient">To:</lable>
-      <input name="recipient" id="recipient" type="email">
-    <p/>
-    <p>
-      <lable name="subject" for="subject">Subject:</lable>
-        <input id ="subject" name="subject"></p>
-    <p>
-      <lable name="message" for="message">Your message:</lable>
-      <input id="message" name="message" type="text">
-    </p>
-    <p><button type="submit">Send</button></p>
-</form>
+  <form id="new_email" method="post">
+      <div class="form-group">
+        <lable for="recipient">To:</lable>
+        <input name="recipient" id="recipient" type="email" class="form-control form-control-sm" placeholder="Add recipient">
+      </div>
+      <div class="form-group">
+        <lable name="subject" for="subject">Subject:</lable>
+        <input id ="subject" name="subject" type="text" class="form-control form-control-sm" placeholder="Add subject">
+      </div>
+      <div class="form-group">
+        <lable name="message" for="message">Your message:</lable>
+        <textarea id="message" name="message" form="new_email" class="form-control" rows=10 placeholder="Enter your message"></textarea>
+      </div>
+      <p><button type="submit" class="btn btn-outline-danger">Send</button></p>
+  </form>
+</div>
 
 {% endblock page_content %}

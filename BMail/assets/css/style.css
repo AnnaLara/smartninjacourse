@@ -1,3 +1,22 @@
-body {
-    background-color: white;
+#menu-logo{
+  max-height: 100%;
+}
+
+.container{
+  margin-top: 30px;
+}
+.centered{
+  text-align: center;
+}
+
+.list-email{
+  margin-right: 70px;
+}
+
+.nav-link:hover{
+  color: #c92d39;
+}
+
+.navbar-light:hover .navbar-nav:hover .nav-link:hover{
+  color: #c92d39;
 }
