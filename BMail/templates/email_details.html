@@ -16,5 +16,7 @@
   <li class="list-group-item"><p>{{ email.message.replace("\n", '</p><p>') }}</p></li>
 
 </ul>
+<br>
+<a href="/emails/{{ email.key.id() }}/delete">Delete email</a>
 
 {% endblock page_content %}

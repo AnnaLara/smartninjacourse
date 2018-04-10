@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock title %}
+
+{% block page_content %}
+
+{% include "menu.html" %}
+<br>
+<br>
+<h3>Do you really want to delete this message?</h3>
+<br>
+
+<form action="/emails/{{ email.key.id() }}/delete" method="post">
+  <button type="submit" class="btn btn-outline-danger">YES, delete!</button>
+</form>
+{% endblock page_content %}

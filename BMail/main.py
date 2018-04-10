@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+#-*- coding: utf-8 -*-
+
 import os
 import jinja2
 import webapp2
@@ -6,6 +8,10 @@ from models import Email
 from datetime import datetime
 
 from google.appengine.api import users
+
+# def changeTzToLocal(utc_now):
+#     local_tz = get_localzone()
+#     return utc_now.replace(tzinfo=utc).astimezone(local_tz)
 
 
 template_dir = os.path.join(os.path.dirname(__file__), "templates")
@@ -65,7 +71,9 @@ class MainHandler(BaseHandler):
 
 class NewEmailHandler(BaseHandler):
     def get(self):
-        return self.render_template("new_email.html")
+        title = "New email"
+        params = {"title": title}
+        return self.render_template("new_email.html", params = params)
 
     def post(self):
         sender = users.get_current_user().email()
@@ -81,16 +89,28 @@ class NewEmailHandler(BaseHandler):
 class InboxHandler(BaseHandler):
     def get(self):
         user = users.get_current_user()
+        title = "Inbox"
         emails = Email.query(Email.recipient == user.email()).fetch()
-        params = {"emails": emails, "user": user, "view_name": "Inbox"}
+
+        for e in emails:
+            if e.deletedByRecipient == True:
+                emails.remove(e)
+
+        params = {"emails": emails, "user": user, "view_name": "Inbox", "title": title}
         self.render_template("view_emails.html", params = params)
 
 
 class SentEmailsHandler(BaseHandler):
     def get(self):
         user = users.get_current_user()
+        title = "Sent"
         emails = Email.query(Email.sender == user.email()).fetch()
-        params = {"emails": emails, "user": user, "view_name": "Sent"}
+
+        for e in emails:
+            if e.deletedBySender == True:
+                emails.remove(e)
+
+        params = {"emails": emails, "user": user, "view_name": "Sent", "title": title}
         self.render_template("view_emails.html", params = params)
 
 
@@ -103,6 +123,34 @@ class MessageDetailsHandler(BaseHandler):
         params = {"email": email, "user": user, "title": "title"}
         self.render_template("email_details.html", params = params)
 
+class DeleteEmailHandler(BaseHandler):
+    def get(self, email_id):
+        title = "Delete email"
+        email = Email.get_by_id(int(email_id))
+
+        params = {"email": email, "title": title}
+        self.render_template("delete_email.html", params = params)
+
+    def post(self, email_id):
+        title = "Delete email"
+        email = Email.get_by_id(int(email_id))
+        user = users.get_current_user()
+
+        if user.email() == email.sender and user.email() == email.recipient:
+            email.key.delete()
+        elif user.email() == email.sender:
+            email.deletedBySender = True
+            email.put()
+        else:
+            email.deletedByRecipient = True
+            email.put()
+
+        if email.deletedBySender == True and email.deletedByRecipient == True:
+            email.key.delete()
+
+        self.render_template("message_deleted.html")
+
+
 
 
 app = webapp2.WSGIApplication([
@@ -111,4 +159,5 @@ app = webapp2.WSGIApplication([
     webapp2.Route('/inbox', InboxHandler, name = "Inbox"),
     webapp2.Route('/sent', SentEmailsHandler),
     webapp2.Route('/emails/<email_id:\d+>', MessageDetailsHandler),
+    webapp2.Route('/emails/<email_id:\d+>/delete', DeleteEmailHandler),
 ], debug=True)
