@@ -26,9 +26,7 @@
   <h3>Weather in {{ weather_info.name}}:</h3>
   <br>
   {% if weather_info.weather %}
-    <h6><strong>Description: </strong>{{ weather_info.weather[0].description }}</h6>
-    <br>
-    <h6><img src={{ "http://openweathermap.org/img/w/" + weather_info.weather[0].icon  + ".png"  }}></h6>
+    <h6><strong>Current weather: </strong>{{ weather_info.weather[0].description }}<img src={{ "http://openweathermap.org/img/w/" + weather_info.weather[0].icon  + ".png"  }}></h6>
     <br>
     <h6><strong>Current temperature: </strong>{{ weather_info.main.temp }} ºC</h6>
     <br>
