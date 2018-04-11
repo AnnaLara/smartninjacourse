@@ -6,7 +6,8 @@ import jinja2
 import webapp2
 from models import Email
 from datetime import datetime
-
+import json
+from google.appengine.api import urlfetch
 from google.appengine.api import users
 
 # def changeTzToLocal(utc_now):
@@ -150,7 +151,21 @@ class DeleteEmailHandler(BaseHandler):
 
         self.render_template("message_deleted.html")
 
+class WeatherHandler(BaseHandler):
+    def get(self):
+        self.render_template("weather.html")
 
+    def post(self):
+        location = self.request.get("location")
+        country = self.request.get("country").lower()
+        url = "http://api.openweathermap.org/data/2.5/weather?q=" + location + "," + country + "&units=metric&appid=3133f6da8281d61b2af7ef06e92dfb3d"
+        result = urlfetch.fetch(url)
+
+        weather_info = json.loads(result.content)
+
+        params = {"weather_info": weather_info}
+
+        self.render_template("weather.html", params)
 
 
 app = webapp2.WSGIApplication([
@@ -160,4 +175,5 @@ app = webapp2.WSGIApplication([
     webapp2.Route('/sent', SentEmailsHandler),
     webapp2.Route('/emails/<email_id:\d+>', MessageDetailsHandler),
     webapp2.Route('/emails/<email_id:\d+>/delete', DeleteEmailHandler),
+    webapp2.Route('/weather', WeatherHandler),
 ], debug=True)
