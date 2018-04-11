@@ -18,11 +18,11 @@ from google.appengine.api import users
 template_dir = os.path.join(os.path.dirname(__file__), "templates")
 jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_dir), autoescape=False)
 
-def emailFilter(atr_name, value, email_list):
-    for element in email_list:
-        if element.atr_name != value:
-            email_list.remove(element)
-    return email_list
+# def emailFilter(atr_name, value, email_list):
+#     for element in email_list:
+#         if element.atr_name != value:
+#             email_list.remove(element)
+#     return email_list
 
 
 class BaseHandler(webapp2.RequestHandler):
@@ -121,7 +121,7 @@ class MessageDetailsHandler(BaseHandler):
         title = "Email details"
         email = Email.get_by_id(int(email_id))
 
-        params = {"email": email, "user": user, "title": "title"}
+        params = {"email": email, "user": user, "title": title}
         self.render_template("email_details.html", params = params)
 
 class DeleteEmailHandler(BaseHandler):
